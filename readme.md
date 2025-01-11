@@ -21,4 +21,4 @@ The `docker-compose.yml` file defines the following services:
 
 3. Access the Application:
 - Fronend: http://localhost:3000
-- Backend API: http://localhost:5001
+- Backend API: http://localhost:5001/tasks
