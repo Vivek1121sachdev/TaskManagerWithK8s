@@ -62,3 +62,17 @@ module "Gateways" {
   vpc_id     = module.vpc.vpc_ids
   subnet_ids = module.subnet.subnet_ids
 }
+
+#################
+# Routing Table #
+#################
+
+// Routing Tables
+module "RouteTable" {
+  source     = "./Modules/RoutingTable"
+
+  vpc_id     = module.vpc.vpc_ids
+  subnet_ids = module.subnet.subnet_ids
+  ig     = module.Gateways.internet_gateway_id
+  nat    = module.Gateways.natgateway_id
+}
