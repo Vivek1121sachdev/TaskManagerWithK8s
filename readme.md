@@ -14,3 +14,11 @@ The `docker-compose.yml` file defines the following services:
    ```bash
    git clone https://github.com/Vivek1121sachdev/TaskManagerWithK8s.git
    cd task-manager
+
+2. Test using the Docker Compose:
+    ```bash
+    docker-compose --build up
+
+3. Access the Application:
+- Fronend: http://localhost:3000
+- Backend API: http://localhost:5001
