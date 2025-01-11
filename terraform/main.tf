@@ -76,3 +76,24 @@ module "RouteTable" {
   ig     = module.Gateways.internet_gateway_id
   nat    = module.Gateways.natgateway_id
 }
+
+#############
+# ECR Block #
+#############
+
+module "ecr" {
+  source = "./Modules/ECR"
+
+  repositories = {
+    backend = {
+      name                 = "backend-repo"
+      image_tag_mutability = "IMMUTABLE"
+      scan                 = false
+    },
+    frontend = {
+      name                 = "frontend-repo"
+      image_tag_mutability = "IMMUTABLE"
+      scan                 = false
+    }
+  }
+}
