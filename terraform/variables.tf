@@ -1,16 +1,19 @@
-variable "vpc-cidr-block" {
-  type = string
-}
-
-variable "vpc-tag" {
-  type = string
-}
-
 variable "region" {
+  description = "Region name in which all the infrastructure will create"
   type = string
 }
 
 variable "profile" {
+  description = "AWS Profile to select the aws account to create resources"
+  type = string
+}
+variable "vpc-cidr-block" {
+  description = "VPC IP Range"
+  type = string
+}
+
+variable "vpc-tag" {
+  description = "VPC Tag"
   type = string
 }
 
