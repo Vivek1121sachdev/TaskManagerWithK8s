@@ -50,3 +50,15 @@ module "subnet" {
     }
   }
 }
+
+############
+# Gateways #
+############
+
+module "Gateways" {
+  source = "./Modules/Gateways"
+
+  // Internet Gateway and NAT Gateway
+  vpc_id     = module.vpc.vpc_ids
+  subnet_ids = module.subnet.subnet_ids
+}
