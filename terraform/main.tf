@@ -17,7 +17,7 @@ module "vpc" {
   vpc_config = {
     "EKS-VPC" = {
       cidr_block = var.vpc-cidr-block
-      tag        = var.vpc-tag
+      env        = var.env
     }
   }
 }

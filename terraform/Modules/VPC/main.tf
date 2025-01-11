@@ -6,6 +6,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
   
   tags = {
-    Name = each.value.tag
+    Name = each.key
+    Env  = each.value.env
   }
 }
