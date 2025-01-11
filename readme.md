@@ -12,5 +12,5 @@ The `docker-compose.yml` file defines the following services:
 ### Local Testing Instructions
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/task-manager.git
+   git clone https://github.com/Vivek1121sachdev/TaskManagerWithK8s.git
    cd task-manager
