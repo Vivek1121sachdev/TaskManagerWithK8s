@@ -42,7 +42,12 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Step 5: Create ECR using Terraform
+      # Step 5: Download Tfvars file from S3
+      - name: Download tfvars from S3
+        run: |
+          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/terraform.tfvars ./terraform.tfvars
+
+      # Step 6: Create ECR using Terraform
       - name: Terraform Apply - Create ECR
         run: terraform plan -target=module.ecr
         working-directory: ./terraform
@@ -50,7 +55,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Step 6: Build and Push Frontend Docker Image
+      # Step 7: Build and Push Frontend Docker Image
       - name: Build and Push Frontend Image
         run: |
           docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$FRONTEND_REPO_NAME:${{ env.GIT_HASH }} ./frontend
@@ -61,7 +66,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Step 7: Build and Push Backend Docker Image
+      # Step 8: Build and Push Backend Docker Image
       - name: Build and Push Backend Image
         run: |
           docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$BACKEND_REPO_NAME:${{ env.GIT_HASH }} ./backend
@@ -72,7 +77,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Step 8: Terraform Plan
+      # Step 9: Terraform Plan
       - name: Terraform Plan
         run: terraform plan
         working-directory: ./terraform
@@ -80,7 +85,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Step 9: Terraform Apply
+      # Step 10: Terraform Apply
       - name: Terraform Apply
         run: terraform apply --auto-approve
         working-directory: ./terraform
