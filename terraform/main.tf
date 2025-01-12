@@ -7,6 +7,22 @@ provider "aws" {
   profile = var.profile
 }
 
+
+####################
+# State Management #
+####################
+
+terraform {
+  backend "s3" {
+    bucket         = "task-manager-with-k8s"   
+    key            = "terraform.tfstate"
+    region         = "us-east-1"            
+    encrypt        =  true
+
+    profile = "vivek"
+  }
+}
+
 #############
 # VPC Block #
 #############
