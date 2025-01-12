@@ -38,6 +38,9 @@ jobs:
       - name: Terraform Init
         run: terraform init -upgrade
         working-directory: ./terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       # Step 5: Create ECR using Terraform
       - name: Terraform Apply - Create ECR
