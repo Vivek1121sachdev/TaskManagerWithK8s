@@ -43,7 +43,7 @@ jobs:
 
       - name: Download tfvars from S3
         run: |
-          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/terraform.tfvars ./terraform.tfvars
+          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/terraform.tfvars ./terraform/terraform.tfvars
 
       - name: Terraform Plan
         run: terraform plan -target=module.ecr
