@@ -46,6 +46,10 @@ jobs:
       - name: Download tfvars from S3
         run: |
           aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/terraform.tfvars ./terraform.tfvars
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 
       # Step 6: Create ECR using Terraform
       - name: Terraform Apply - Create ECR
