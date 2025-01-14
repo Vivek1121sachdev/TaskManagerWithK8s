@@ -18,70 +18,73 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    
     steps:
+      
+      # Step 1: Checking out the Repository
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      # Step 2: Setting up the Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.7
-
+      
+      # Step 3: Extracting the Git Hash
       - name: Extract Git Hash
         id: git-info
         run: echo "GIT_HASH=$(git rev-parse --short=8 HEAD)" >> $GITHUB_ENV
 
+      # Step 4: Setting the AWS credential  
       - name: Deploy to AWS
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+      # Step 5: Initializing the Terraform
       - name: Initialize Terraform
         run: terraform init
         working-directory: ./terraform
 
+      # Step 6: Downloading the tfvars file from the s3 
       - name: Download tfvars from S3
         run: |
           aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/terraform.tfvars ./terraform/terraform.tfvars
 
-      - name: Terraform Plan
-        run: terraform apply -target=module.ecr
+      # Step 7: Creating Terraform plan for ECR Module
+      - name: Terraform plan
+        run: terraform plan -target=module.ecr
         working-directory: ./terraform
 
-      # Step 7: Build and Push Frontend Docker Image
+      # Step 8: Creating ECR Repo
+      - name: Terraform Apply
+        run: terraform apply -target=module.ecr --auto-approve
+        working-directory: ./terraform
+
+
+      # Step 9: Building and Pushing Frontend Docker Image to ECR
       - name: Build and Push Frontend Image
         run: |
           docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$FRONTEND_REPO_NAME:${{ env.GIT_HASH }} ./frontend
           echo "Logging in to Amazon ECR..."
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
           docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$FRONTEND_REPO_NAME:${{ env.GIT_HASH }}
-        # env:
-        #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Step 8: Build and Push Backend Docker Image
+      # Step 10: Building and Pushing Backend Docker Image to ECR
       - name: Build and Push Backend Image
         run: |
           docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$BACKEND_REPO_NAME:${{ env.GIT_HASH }} ./backend
           echo "Logging in to Amazon ECR..."
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
           docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$BACKEND_REPO_NAME:${{ env.GIT_HASH }}
-        # env:
-        #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Step 9: Terraform Plan
+      # Step 11: Creating Terraform Plan for rest Infra.
       - name: Terraform Plan
         run: terraform plan
         working-directory: ./terraform
-        # env:
-        #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Step 10: Terraform Apply
+      # Step 12: Creating rest Infra.
       - name: Terraform Apply
         run: terraform apply --auto-approve
         working-directory: ./terraform
-        # env:
-        #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
