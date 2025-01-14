@@ -3,10 +3,10 @@ variable "region" {
   type        = string
 }
 
-variable "profile" {
-  description = "AWS Profile to select the aws account to create resources"
-  type        = string
-}
+# variable "profile" {
+#   description = "AWS Profile to select the aws account to create resources"
+#   type        = string
+# }
 
 variable "vpc-cidr-block" {
   description = "VPC IP Range"
