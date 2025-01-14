@@ -52,7 +52,12 @@ resource "aws_route_table" "app-private-rt" {
 # Private Route-Table Association - App #
 #########################################
 
-resource "aws_route_table_association" "app-private-rt-association" {
-  subnet_id      = var.subnet_ids["app-subnet"]
+resource "aws_route_table_association" "app-private-rt-association-a" {
+  subnet_id      = var.subnet_ids["app-subnet-a"]
+  route_table_id = aws_route_table.app-private-rt.id
+}
+
+resource "aws_route_table_association" "app-private-rt-association-b" {
+  subnet_id      = var.subnet_ids["app-subnet-b"]
   route_table_id = aws_route_table.app-private-rt.id
 }
