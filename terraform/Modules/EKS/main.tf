@@ -5,7 +5,14 @@ resource "aws_eks_cluster" "eks_clusters" {
   role_arn = each.value.cluster_iam_roles
   version  = "1.27"
 
+  access_config {
+    authentication_mode = "API"
+    bootstrap_cluster_creator_admin_permissions = true 
+  }
+
   vpc_config {
+    endpoint_private_access = false
+    endpoint_public_access = true
     subnet_ids = each.value.subnets
   }
 
@@ -28,9 +35,9 @@ resource "aws_eks_node_group" "eks_node_groups" {
     max_size     = each.value.node_count
   }
 
-  remote_access {
-    ec2_ssh_key               = each.value.ec2_ssh_key
-  }
+  # remote_access {
+  #   ec2_ssh_key               = each.value.ec2_ssh_key
+  # }
 
   instance_types = [each.value.node_type]
   disk_size      = each.value.node_disk_size

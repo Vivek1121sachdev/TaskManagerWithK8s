@@ -4,7 +4,7 @@
 
 provider "aws" {
   region  = var.region
-  # profile = var.profile
+  profile = var.profile
 }
 
 
@@ -19,7 +19,7 @@ terraform {
     region  = "us-east-1"
     encrypt = true
 
-    # profile = "vivek"
+    profile = "vivek"
   }
 }
 
@@ -106,104 +106,104 @@ module "RouteTable" {
 # KeyPairs Block #
 ##################
 
-module "key_pair" {
-  source = "./Modules/Key-pair"
+# module "key_pair" {
+#   source = "./Modules/Key-pair"
 
-  key_pairs = {
+#   key_pairs = {
 
-    // Bastion Host
-    bastion-server-kp = {
-      name      = "bastion-server-kp"
-      save_path = "${var.key_directory}/${var.web}"
-    },
-    eks-node-kp = {
-      name      = "eks-node-kp"
-      save_path = "${var.key_directory}/${var.app}"
-    }
-  }
-}
+#     // Bastion Host
+#     bastion-server-kp = {
+#       name      = "bastion-server-kp"
+#       save_path = "${var.key_directory}/${var.web}"
+#     },
+#     eks-node-kp = {
+#       name      = "eks-node-kp"
+#       save_path = "${var.key_directory}/${var.app}"
+#     }
+#   }
+# }
 
 ########################
 # Security Group Block #
 ########################
-module "security_groups" {
-  source = "./Modules/Security Group"
+# module "security_groups" {
+#   source = "./Modules/Security Group"
   
-  security_groups = {
+#   security_groups = {
 
-   "bastion-sg" = {
-      name        = var.bastion-sg-name
-      description = "Bastion security group"
-      vpc_id      = module.vpc.vpc_ids["EKS-VPC"]
-      tag = {
-        Name = var.bastion-sg-name
-        Env  = var.env
-      }
-    }
-  }
-}
+#    "bastion-sg" = {
+#       name        = var.bastion-sg-name
+#       description = "Bastion security group"
+#       vpc_id      = module.vpc.vpc_ids["EKS-VPC"]
+#       tag = {
+#         Name = var.bastion-sg-name
+#         Env  = var.env
+#       }
+#     }
+#   }
+# }
 
 ########################
 # Security Group Rules #
 ########################
 
-module "security_group_rules" {
-  source = "./Modules/Security Group Rules"
-  depends_on = [ module.security_groups ]
+# module "security_group_rules" {
+#   source = "./Modules/Security Group Rules"
+#   depends_on = [ module.security_groups ]
 
-  security_groups_cidr_ingress = {
+#   security_groups_cidr_ingress = {
 
-    // Bastion SSH Rule
-    bastion-sg-ssh-ingress = {
-      type              = var.rule_type_ingress
-      description       = "Allow SSH to bastion Host"
-      from_port         = var.ssh_protocol
-      to_port           = var.ssh_protocol
-      protocol          = var.sg_protocol_tcp
-      cidr_block        = var.bastion-sg-cidr-blocks
-      security_group_id = module.security_groups.aws_security_group["bastion-sg"].id
-    },
-}
-  security_groups_ssg_ingress = {}
+#     // Bastion SSH Rule
+#     bastion-sg-ssh-ingress = {
+#       type              = var.rule_type_ingress
+#       description       = "Allow SSH to bastion Host"
+#       from_port         = var.ssh_protocol
+#       to_port           = var.ssh_protocol
+#       protocol          = var.sg_protocol_tcp
+#       cidr_block        = var.bastion-sg-cidr-blocks
+#       security_group_id = module.security_groups.aws_security_group["bastion-sg"].id
+#     },
+# }
+#   security_groups_ssg_ingress = {}
 
-  security_groups_cidr_egress = {
+#   security_groups_cidr_egress = {
   
-    // Bastion Host
-    bastion-sg-egress = {
-      type              = var.rule_type_egress
-      description       = "Allow all outbound traffic"
-      from_port         = var.any_rule
-      to_port           = var.any_rule
-      protocol          = var.sg_protocol_any
-      cidr_block        = var.global-cidr-block
-      security_group_id = module.security_groups.aws_security_group["bastion-sg"].id
+#     // Bastion Host
+#     bastion-sg-egress = {
+#       type              = var.rule_type_egress
+#       description       = "Allow all outbound traffic"
+#       from_port         = var.any_rule
+#       to_port           = var.any_rule
+#       protocol          = var.sg_protocol_any
+#       cidr_block        = var.global-cidr-block
+#       security_group_id = module.security_groups.aws_security_group["bastion-sg"].id
 
-    }
-}
+#     }
+# }
 
-  security_groups_ssg_egress = {}
-}
+#   security_groups_ssg_egress = {}
+# }
 
 #############
 # EC2 Block #
 #############
 
-module "ec2" {
-  source = "./Modules/EC2"
+# module "ec2" {
+#   source = "./Modules/EC2"
 
-  ec2_config = {
+#   ec2_config = {
 
-    // Bastion Host
-    "bastion-host-server" = {
-      subnet_id       = module.subnet.subnet_ids["web-subnet"]
-      ami             = var.bastion-host-ami
-      instance_type   = var.bastion-host-server-size
-      key_name        = module.key_pair.key_pairs["bastion-server-kp"]  
-      vpc_security_group_ids = [module.security_groups.aws_security_group["bastion-sg"].id] 
-      env             = var.env
-    }
-  }
-}
+#     // Bastion Host
+#     "bastion-host-server" = {
+#       subnet_id       = module.subnet.subnet_ids["web-subnet"]
+#       ami             = var.bastion-host-ami
+#       instance_type   = var.bastion-host-server-size
+#       key_name        = module.key_pair.key_pairs["bastion-server-kp"]  
+#       vpc_security_group_ids = [module.security_groups.aws_security_group["bastion-sg"].id] 
+#       env             = var.env
+#     }
+#   }
+# }
 
 #############
 # ECR Block #
@@ -249,7 +249,7 @@ module "eks" {
       subnets           = [module.subnet.subnet_ids["app-subnet-a"], module.subnet.subnet_ids["app-subnet-b"]]
       cluster_iam_roles = module.iam.eks_roles["cluster-a"]
       node_iam_roles    = module.iam.node_roles["cluster-a"]
-      ec2_ssh_key    = module.key_pair.key_pairs["eks-node-kp"]
+      # ec2_ssh_key    = module.key_pair.key_pairs["eks-node-kp"]
       node_count     = 1
       node_type      = "t3.medium"
       node_disk_size = 20

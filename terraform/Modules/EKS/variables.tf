@@ -3,7 +3,7 @@ variable "clusters_config" {
   type = map(object({
     region         = string
     subnets        = list(string)
-    ec2_ssh_key    = string
+    # ec2_ssh_key    = string
     cluster_iam_roles = string
     node_iam_roles = string
     node_count     = number
