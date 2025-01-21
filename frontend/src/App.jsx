@@ -5,14 +5,14 @@ function App() {
   const [newTask, setNewTask] = useState('');
 
   useEffect(() => {
-    fetch('http://backend.taskmanager.svc.cluster.local:5001/tasks')
+    fetch('http://ae299defa73744505a6de54af1d64889-390746615.us-east-1.elb.amazonaws.com:5001/tasks5001/tasks')
       .then((response) => response.json())
       .then((data) => setTasks(data));
   }, []);
 
   const addTask = async () => {
     if (!newTask.trim()) return;
-    const response = await fetch('http://backend.taskmanager.svc.cluster.local:5001/tasks', {
+    const response = await fetch('http://ae299defa73744505a6de54af1d64889-390746615.us-east-1.elb.amazonaws.com:5001/tasks5001/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: newTask }),
@@ -23,7 +23,7 @@ function App() {
   };
 
   const deleteTask = async (id) => {
-    await fetch(`http://backend.taskmanager.svc.cluster.local:5001/tasks/${id}`, { method: 'DELETE' });
+    await fetch(`http://ae299defa73744505a6de54af1d64889-390746615.us-east-1.elb.amazonaws.com:5001/tasks:5001/tasks/${id}`, { method: 'DELETE' });
     setTasks(tasks.filter((task) => task.id !== id));
   };
 

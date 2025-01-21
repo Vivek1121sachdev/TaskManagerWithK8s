@@ -4,7 +4,7 @@
 
 provider "aws" {
   region  = var.region
-  # profile = var.profile
+  profile = var.profile
 }
 
 
@@ -19,7 +19,7 @@ terraform {
     region  = "us-east-1"
     encrypt = true
 
-    # profile = "vivek"
+    profile = "vivek"
   }
 }
 

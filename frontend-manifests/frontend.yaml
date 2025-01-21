@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/frontend-repo:cf859b21 # Replace with the correct image URL or build process
+        image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/frontend-repo:0e9af31a # Replace with the correct image URL or build process
         ports:
         - containerPort: 3000
 ---
