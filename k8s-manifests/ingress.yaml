@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   name: app-ingress
   namespace: taskmanager
-  # annotations:
-  #   nginx.ingress.kubernetes.io/rewrite-target: /
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx  # Use the name of the valid IngressClass
   rules:
