@@ -26,7 +26,7 @@ spec:
             - name: POSTGRES_DB
               value: task_manager
             - name: POSTGRES_HOST
-              value: 172.20.76.16
+              value: 172.20.137.117
 ---
 # Backend Service (backend-service.yaml)
 apiVersion: v1
