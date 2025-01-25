@@ -5,14 +5,14 @@ function App() {
   const [newTask, setNewTask] = useState('');
 
   useEffect(() => {
-    fetch('a3fa7814e7a8146ed852e8fe2dcb7028-7477371.us-east-1.elb.amazonaws.com/tasks')
+    fetch('a3fa7814e7a8146ed852e8fe2dcb7028-7477371.us-east-1.elb.amazonaws.com/backend/tasks')
       .then((response) => response.json())
       .then((data) => setTasks(data));
   }, []);
 
   const addTask = async () => {
     if (!newTask.trim()) return;
-    const response = await fetch('a3fa7814e7a8146ed852e8fe2dcb7028-7477371.us-east-1.elb.amazonaws.com/tasks', {
+    const response = await fetch('a3fa7814e7a8146ed852e8fe2dcb7028-7477371.us-east-1.elb.amazonaws.com/backend/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: newTask }),
@@ -23,7 +23,7 @@ function App() {
   };
 
   const deleteTask = async (id) => {
-    await fetch(`a3fa7814e7a8146ed852e8fe2dcb7028-7477371.us-east-1.elb.amazonaws.com/tasks/${id}`, { method: 'DELETE' });
+    await fetch(`a3fa7814e7a8146ed852e8fe2dcb7028-7477371.us-east-1.elb.amazonaws.com/backend/tasks/${id}`, { method: 'DELETE' });
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
