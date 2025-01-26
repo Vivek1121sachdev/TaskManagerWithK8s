@@ -1,3 +1,10 @@
+#  - name: POSTGRES_USER
+#               value: task_manager
+#             - name: POSTGRES_PASSWORD
+#               value: password
+#             - name: POSTGRES_DB
+#               value: task_manager
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,31 +22,24 @@ spec:
     spec:
       containers:
         - name: backend
-          image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/backend-repo:b4114c5c
+          image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/backend-repo:a48d8d57
           ports:
             - containerPort: 5001
           env:
-            - name: POSTGRES_USER
-              value: task_manager
-            - name: POSTGRES_PASSWORD
-              value: password
-            - name: POSTGRES_DB
-              value: task_manager
             - name: POSTGRES_HOST
-              value: 172.20.137.117
----
-# Backend Service (backend-service.yaml)
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend
-  namespace: taskmanager
-spec:
-  selector:
-    app: backend
-  ports:
-    - protocol: TCP
-      port: 5001
-      targetPort: 5001
-
-
+              value: 172.20.175.14
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
