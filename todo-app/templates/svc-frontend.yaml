@@ -1,0 +1,17 @@
+# Frontend Service (frontend-service.yaml)
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mychart.fullname" . }}-frontend
+  annotations:
+    "helm.sh/hook": "post-install"
+    "helm.sh/hook-weight": "8"
+  labels:
+    app: {{ include "mychart.fullname" . }}-frontend
+spec:
+  selector:
+    app: {{ include "mychart.fullname" . }}-frontend
+  ports:
+    - protocol: TCP
+      port: {{ .Values.frontend.service.port }} 
+      targetPort: {{ .Values.frontend.service.port }}

@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "mychart.fullname" . }}-ingress
+  annotations:
+    "helm.sh/hook": "post-install"
+    "helm.sh/hook-weight": "10"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx  # Use the name of the valid IngressClass
+  rules:
+  - http:
+      paths:
+      - path: /frontend(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: {{ include "mychart.fullname" . }}-frontend
+            port:
+              number: {{ .Values.frontend.service.port }}
+      - path: /backend(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+        backend:
+          service:
+            name: {{ include "mychart.fullname" . }}-backend
+            port:
+              number: {{ .Values.backend.service.port }}

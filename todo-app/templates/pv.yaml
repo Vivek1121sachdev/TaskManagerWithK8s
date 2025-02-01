@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "mychart.fullname" . }}-database-pv
+  annotations:
+     "helm.sh/hook": "pre-install"
+     "helm.sh/hook-weight": "2"
+spec:
+  capacity:
+    storage: {{ .Values.database.storage.size }}
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath:
+    path: {{ .Values.database.storage.hostPath }}
+    type: DirectoryOrCreate

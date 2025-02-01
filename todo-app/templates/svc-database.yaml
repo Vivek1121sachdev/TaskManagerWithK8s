@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mychart.fullname" . }}-database
+  annotations:
+    "helm.sh/hook": "post-install"
+    "helm.sh/hook-weight": "5"
+  labels:
+    app: {{ include "mychart.fullname" . }}-database
+spec:
+  ports:
+  - port: {{ .Values.database.service.port }}
+    targetPort: {{ .Values.database.service.port }}
+  selector:
+    app: {{ include "mychart.fullname" . }}-database
+  type: ClusterIP

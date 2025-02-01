@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mychart.fullname" . }}-frontend
+  labels:
+    app: {{ include "mychart.name" . }}
+    tier: frontend
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "mychart.fullname" . }}-frontend
+  template:
+    metadata:
+      labels:
+        app: {{ include "mychart.fullname" . }}-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: {{ .Values.frontend.image }}
+        ports:
+        - containerPort: {{ .Values.frontend.service.port }}

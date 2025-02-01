@@ -1,0 +1,27 @@
+frontend:
+  replicaCount: 1
+  image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/frontend-repo:637fa825
+  service:
+    port: 3001
+
+backend:
+  replicaCount: 1
+  image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/backend-repo:637fa825
+  service:
+    port: 5001
+
+database:
+  replicaCount: 1
+  image: postgres:15
+  service:
+    port: 5432
+  storage:
+    size: 2Gi
+    mountPath: /var/lib/postgresql/data
+    hostPath: /mnt/data/postgres 
+
+global:
+  secret:
+    username: task_manager
+    password: password
+    db: task_manager

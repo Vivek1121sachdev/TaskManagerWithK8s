@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mychart.fullname" . }}-database
+  annotations:
+    "helm.sh/hook": "post-install"
+    "helm.sh/hook-weight": "4"
+  labels:
+    app: {{ include "mychart.name" . }}
+    tier: database
+spec:
+  replicas: {{ .Values.database.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "mychart.fullname" . }}-database
+  template:
+    metadata:
+      labels:
+        app: {{ include "mychart.fullname" . }}-database
+    spec:
+      containers:
+      - name: postgres
+        image: {{ .Values.database.image }}
+        ports:
+        - containerPort: {{ .Values.database.service.port }}
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "mychart.fullname" . }}-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "mychart.fullname" . }}-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "mychart.fullname" . }}-secret
+              key: POSTGRES_DB
+        volumeMounts:
+        - mountPath: {{ .Values.database.storage.mountPath }}
+          name: postgres-pv
+      volumes:
+      - name: postgres-pv
+        persistentVolumeClaim:
+          claimName: {{ include "mychart.fullname" . }}-database-pvc

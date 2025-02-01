@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mychart.fullname" . }}-backend
+  annotations:
+    "helm.sh/hook": "post-install"
+    "helm.sh/hook-weight": "6"
+  labels:
+    app: {{ include "mychart.name" . }}
+    tier: backend
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "mychart.fullname" . }}-backend
+  template:
+    metadata:
+      labels:
+        app: {{ include "mychart.fullname" . }}-backend
+    spec:
+      containers:
+        - name: backend
+          image: {{ .Values.backend.image }}
+          ports:
+            - containerPort: {{ .Values.backend.service.port }}
+          env:
+            - name: POSTGRES_HOST
+              value: {{ include "mychart.fullname" . }}-database
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mychart.fullname" . }}-database
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mychart.fullname" . }}-database
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mychart.fullname" . }}-database
+                  key: POSTGRES_DB
