@@ -5,14 +5,14 @@ function App() {
   const [newTask, setNewTask] = useState('');
 
   useEffect(() => {
-    fetch('http://ac78fd00c03e54a5b9c6223ed6853798-932922236.us-east-1.elb.amazonaws.com//backend/tasks')
+    fetch('http://a593584f8f82f48df8075ca8774edc0c-1248162129.us-east-1.elb.amazonaws.com//backend/tasks')
       .then((response) => response.json())
       .then((data) => setTasks(data));
   }, []);
 
   const addTask = async () => {
     if (!newTask.trim()) return;
-    const response = await fetch('http://ac78fd00c03e54a5b9c6223ed6853798-932922236.us-east-1.elb.amazonaws.com//backend/tasks', {
+    const response = await fetch('http://a593584f8f82f48df8075ca8774edc0c-1248162129.us-east-1.elb.amazonaws.com/backend/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: newTask }),
@@ -23,7 +23,7 @@ function App() {
   };
 
   const deleteTask = async (id) => {
-    await fetch(`http://ac78fd00c03e54a5b9c6223ed6853798-932922236.us-east-1.elb.amazonaws.com//backend/tasks/${id}`, { method: 'DELETE' });
+    await fetch(`http://a593584f8f82f48df8075ca8774edc0c-1248162129.us-east-1.elb.amazonaws.com//backend/tasks/${id}`, { method: 'DELETE' });
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
