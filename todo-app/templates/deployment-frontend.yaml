@@ -5,6 +5,9 @@ metadata:
   labels:
     app: {{ include "mychart.name" . }}
     tier: frontend
+  annotations:
+    "helm.sh/hook": "post-install"
+    "helm.sh/hook-weight": "10"
 spec:
   replicas: {{ .Values.frontend.replicaCount }}
   selector:
@@ -20,3 +23,6 @@ spec:
         image: {{ .Values.frontend.image }}
         ports:
         - containerPort: {{ .Values.frontend.service.port }}
+        envFrom:
+          - configMapRef:
+              name: {{ include "mychart.fullname" . }}-frontend-config

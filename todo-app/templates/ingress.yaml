@@ -4,7 +4,7 @@ metadata:
   name: {{ include "mychart.fullname" . }}-ingress
   annotations:
     "helm.sh/hook": "post-install"
-    "helm.sh/hook-weight": "10"
+    "helm.sh/hook-weight": "11"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx  # Use the name of the valid IngressClass
