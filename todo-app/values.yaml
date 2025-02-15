@@ -1,7 +1,7 @@
 frontend:
   replicaCount: 1
   image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/frontend-repo:5592810d
-  REACT_APP_BACKEND_URL: http://{{ include "mychart.fullname" . }}-backend:{{ .Values.backend.service.port }}
+  # REACT_APP_BACKEND_URL: "http://{{ printf "%s-backend:%d" (include "mychart.fullname" .) .Values.backend.service.port }}"
   service:
     port: 3000
 
