@@ -1,13 +1,14 @@
 frontend:
   replicaCount: 1
-  image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/frontend-repo:ace0f7f3
-  REACT_APP_BACKEND_URL: "http://ingress-nginx.ingress-nginx.svc.cluster.local"
+  image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/frontend-repo:892834e9
+  REACT_APP_BACKEND_URL: http://{{ include "mychart.fullname" . }}-backend:{{ .Values.backend.service.port }}
+
   service:
     port: 3000
 
 backend:
   replicaCount: 1
-  image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/backend-repo:ace0f7f3
+  image: 762233746723.dkr.ecr.us-east-1.amazonaws.com/backend-repo:892834e9
   service:
     port: 5001
 

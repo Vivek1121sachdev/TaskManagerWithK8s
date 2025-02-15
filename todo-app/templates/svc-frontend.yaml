@@ -9,6 +9,7 @@ metadata:
   labels:
     app: {{ include "mychart.fullname" . }}-frontend
 spec:
+  type: ClusterIP
   selector:
     app: {{ include "mychart.fullname" . }}-frontend
   ports:

@@ -8,6 +8,7 @@ metadata:
   labels:
     app: {{ include "mychart.fullname" . }}-backend
 spec:
+  type: ClusterIP
   selector:
     app: {{ include "mychart.fullname" . }}-backend
   ports:

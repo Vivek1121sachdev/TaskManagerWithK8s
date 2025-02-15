@@ -55,6 +55,14 @@ module "subnet" {
       assign_public_ip  = true
       env               = var.env
     },
+    // Web - Public Subnet - B
+    "web-subnet-b" = {
+      vpc_id            = module.vpc.vpc_ids["EKS-VPC"]
+      cidr_block        = "10.0.4.0/24"
+      availability_zone = "us-east-1b"
+      assign_public_ip  = true
+      env               = var.env
+    },
 
     // App - Private Subnet - A
     "app-subnet-a" = {

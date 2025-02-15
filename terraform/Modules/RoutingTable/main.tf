@@ -26,6 +26,13 @@ resource "aws_route_table_association" "web-rt-association" {
   route_table_id = aws_route_table.public-rt.id
 }
 
+// web subnet
+resource "aws_route_table_association" "web-rt-association-b" {
+  subnet_id      = var.subnet_ids["web-subnet-b"]
+  route_table_id = aws_route_table.public-rt.id
+}
+
+
 ###############################
 # Route-Table-Private for App #
 ###############################

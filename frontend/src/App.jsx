@@ -7,7 +7,7 @@ function App() {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
-    fetch(`${backendUrl}/backend/tasks`)
+    fetch(`${backendUrl}/tasks`)
       .then((response) => response.json())
       .then((data) => setTasks(data));
   }, []);
