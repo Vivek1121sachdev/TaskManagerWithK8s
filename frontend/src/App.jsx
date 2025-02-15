@@ -14,7 +14,7 @@ function App() {
 
   const addTask = async () => {
     if (!newTask.trim()) return;
-    const response = await fetch(`${backendUrl}/backend/tasks`, {
+    const response = await fetch(`${backendUrl}/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: newTask }),
@@ -25,7 +25,7 @@ function App() {
   };
 
   const deleteTask = async (id) => {
-    await fetch(`${backendUrl}/backend/tasks/${id}`, { method: 'DELETE' });
+    await fetch(`${backendUrl}/tasks/${id}`, { method: 'DELETE' });
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
