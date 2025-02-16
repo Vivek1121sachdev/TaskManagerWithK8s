@@ -6,4 +6,4 @@ metadata:
     "helm.sh/hook": "post-install"
     "helm.sh/hook-weight": "9"
 data:
-  REACT_APP_BACKEND_URL: http://aafb445dd59aa4c14a34eff8cf00bdc0-1609540402.us-east-1.elb.amazonaws.com/backend
+  REACT_APP_BACKEND_URL: http://aafb445dd59aa4c14a34eff8cf00bdc0-1609540402.us-east-1.elb.amazonaws.com/backend/

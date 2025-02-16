@@ -23,6 +23,6 @@ spec:
         image: {{ .Values.frontend.image }}
         ports:
         - containerPort: {{ .Values.frontend.service.port }}
-        envFrom:
-          - configMapRef:
-              name: {{ include "mychart.fullname" . }}-frontend-config
+        env:
+          - name: REACT_APP_BACKEND_URL
+            value: "http://aafb445dd59aa4c14a34eff8cf00bdc0-1609540402.us-east-1.elb.amazonaws.com/backend"

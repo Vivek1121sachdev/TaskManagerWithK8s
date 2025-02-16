@@ -4,7 +4,8 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
 
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  // const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = "http://task-manager-todo-app-backend:5001/tasks";
 
   useEffect(() => {
     fetch(`${backendUrl}/tasks`)
